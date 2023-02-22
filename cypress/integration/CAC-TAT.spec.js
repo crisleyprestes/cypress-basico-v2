@@ -15,7 +15,7 @@ describe('Central de Atendimento ao Cliente TAT', function(){
         cy.get('#firstName').type('Crisley')
         cy.get('#lastName').type('Linhares')
         cy.get('#email').type('crisley@email.com')
-        cy.get('#open-text-area').type(longText, { delay:0 })
+        cy.get('#open-text-area').type(longText, {delay:0})
         cy.contains('button', 'Enviar').click()
         cy.get('.success').should('be.visible')
     })
@@ -122,6 +122,15 @@ describe('Central de Atendimento ao Cliente TAT', function(){
         cy.get('#file-upload')
             .should('not.have.value')
             .selectFile('./cypress/fixtures/example.json')
+            .should(function($input){
+                expect($input[0].files[0].name).to.be.equal('example.json')
+            })
+    })
+
+    it.only('seleciona um arquivo simulando um drag-and-drop', function(){
+        cy.get('#file-upload')
+            .should('not.have.value')
+            .selectFile('./cypress/fixtures/example.json', {action:"drag-drop"})
             .should(function($input){
                 expect($input[0].files[0].name).to.be.equal('example.json')
             })
