@@ -154,6 +154,6 @@ describe('Central de Atendimento ao Cliente TAT', function(){
             .invoke('removeAttr', 'target')
             .click()
 
-        cy.contains('CAC TAT - Política de privacidade').should('be.visible')
+        cy.contains('CAC TAT - Politica de privacidade').should('be.visible')
     })
 })
