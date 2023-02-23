@@ -12,7 +12,7 @@ describe('Central de Atendimento ao Cliente TAT', function(){
     })
 
     it('preenche os campos obrigatórios e envia o formulário', function(){
-        const longText = 'Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,Teste,'
+        const longText = Cypress._.repeat('Teste, ', 50)
         cy.clock()
         cy.get('#firstName').type('Crisley')
         cy.get('#lastName').type('Linhares')
@@ -36,8 +36,10 @@ describe('Central de Atendimento ao Cliente TAT', function(){
         cy.get('.error').should('not.be.visible')
     })
 
-    it('valida se o campo "Telefone" fica vazio quando dados não numéricos são inseridos', function(){
-        cy.get('#phone').type('Teste').should('have.value', '')
+    Cypress._.times(5, function(){
+        it('valida se o campo "Telefone" fica vazio quando dados não numéricos são inseridos', function(){
+            cy.get('#phone').type('Teste').should('have.value', '')
+        })
     })
 
     it('exibe mensagem de erro quando o telefone se torna obrigatório, mas não é preenchido antes do envio do formulário', function(){
@@ -171,5 +173,23 @@ describe('Central de Atendimento ao Cliente TAT', function(){
             .click()
 
         cy.contains('CAC TAT - Política de privacidade').should('be.visible')
+    })
+
+    it.only('exibe e esconde as mensagens de sucesso e erro usando o .invoke', function(){
+        cy.get('.success')
+            .should('not.be.visible')
+            .invoke('show')
+            .should('be.visible')
+            .and('contain', 'Mensagem enviada com sucesso.')
+            .invoke('hide')
+            .should('not.be.visible')
+
+        cy.get('.error')
+            .should('not.be.visible')
+            .invoke('show')
+            .should('be.visible')
+            .and('contain', 'Valide os campos obrigatórios!')
+            .invoke('hide')
+            .should('not.be.visible')    
     })
 })
